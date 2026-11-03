@@ -1,0 +1,375 @@
+/* 高级同步弹窗样式 - 严格参照 TauriTavern 原版同步面板 (图二) */
+
+#tt-adv-sync-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    background: rgba(0, 0, 0, 0.68);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    box-sizing: border-box;
+    animation: tt-adv-fade-in 0.16s ease-out;
+}
+
+@keyframes tt-adv-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tt-adv-sync-modal {
+    width: min(100%, 520px);
+    max-height: 90vh;
+    background: #141519;
+    color: var(--SmartThemeBodyColor, #e5e7eb);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-size: 14px;
+    text-align: left;
+}
+
+.tt-adv-sync-body {
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* 顶部标题栏 */
+.tt-adv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tt-adv-header-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f3f4f6;
+}
+
+/* 通用按钮 (参照图二按钮质感) */
+.tt-adv-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #23252c;
+    color: #e5e7eb;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+    user-select: none;
+    line-height: 1.3;
+}
+
+.tt-adv-btn:hover:not(:disabled) {
+    background: #2e313a;
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+.tt-adv-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tt-adv-btn.mode-mirror {
+    background: #1d4ed8;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+.tt-adv-btn.mode-mirror:hover:not(:disabled) {
+    background: #1e40af;
+}
+
+.tt-adv-btn.mode-incremental {
+    background: #252830;
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.tt-adv-btn.recommend-action {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.22);
+    color: #93c5fd;
+}
+
+.tt-adv-btn.recommend-action:hover:not(:disabled) {
+    background: rgba(59, 130, 246, 0.35);
+}
+
+.tt-adv-btn.icon-only {
+    padding: 6px 9px;
+}
+
+/* 分区与分割线 */
+.tt-adv-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tt-adv-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.tt-adv-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f3f4f6;
+}
+
+/* 设备卡片 (复刻图二左侧暖金色竖条与圆角卡片) */
+.tt-adv-device-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #1a1b20;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid #b79b5c;
+}
+
+.tt-adv-device-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tt-adv-device-name-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    border: none;
+    color: #f3f4f6;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 0;
+    cursor: pointer;
+}
+
+.tt-adv-device-name-btn i {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.tt-adv-device-name-btn:hover i {
+    color: #e5e7eb;
+}
+
+/* 协议与地址行 */
+.tt-adv-device-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+.tt-adv-device-meta code {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d1d5db;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+/* 数据一致性比对状态块 */
+.tt-adv-compare-box {
+    margin-top: 2px;
+    padding: 9px 11px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tt-adv-compare-box.synced {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    color: #86efac;
+}
+
+.tt-adv-compare-box.cloud-newer {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #fcd34d;
+}
+
+.tt-adv-compare-box.local-newer {
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+}
+
+.tt-adv-compare-box.conflict {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+}
+
+.tt-adv-compare-box.offline {
+    background: rgba(156, 163, 175, 0.1);
+    border: 1px solid rgba(156, 163, 175, 0.22);
+    color: #d1d5db;
+}
+
+.tt-adv-compare-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-weight: 700;
+}
+
+.tt-adv-compare-sub {
+    color: #9ca3af;
+    font-size: 12px;
+    word-break: break-all;
+}
+
+/* 卡片底部操作按钮行 */
+.tt-adv-device-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+/* 折叠面板 (插件侦测连接) */
+.tt-adv-fold {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 12px;
+}
+
+.tt-adv-fold > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+}
+
+.tt-adv-fold > summary::-webkit-details-marker {
+    display: none;
+}
+
+.tt-adv-fold-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #f3f4f6;
+}
+
+.tt-adv-fold-summary {
+    flex: 1;
+    text-align: right;
+    font-size: 12px;
+    color: #9ca3af;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tt-adv-fold-chevron {
+    color: #9ca3af;
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.tt-adv-fold[open] .tt-adv-fold-chevron {
+    transform: rotate(180deg);
+}
+
+.tt-adv-fold-body {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #1a1b20;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tt-adv-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.tt-adv-input {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: #111216;
+    color: #f3f4f6;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.tt-adv-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.tt-adv-diag {
+    font-size: 12px;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 8px;
+    border-radius: 6px;
+    word-break: break-word;
+}
+
+/* 底部关闭按钮 (复刻图二底部通栏蓝底按钮) */
+.tt-adv-footer {
+    padding: 12px 16px 16px;
+}
+
+.tt-adv-close-btn {
+    width: 100%;
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #1d4ed8;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.tt-adv-close-btn:hover {
+    background: #1e40af;
+}
