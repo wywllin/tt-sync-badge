@@ -251,7 +251,7 @@
         }
     }
 
-    // 请求 8844 云端侦测服务（优先走 Tauri Rust 后端请求以彻底绕过 Mixed Content 与 CORS 限制）
+    // 请求 8844 云端侦测服务（使用前端轻量 fetch，静默捕获异常，彻底杜绝触发 Tauri 原生后端错误弹窗）
     async function fetchCloudTracker(forceRefresh = false) {
         if (!trackerUrl) {
             cloudData = null;
@@ -261,28 +261,9 @@
 
         const qs = `t=${Date.now()}${forceRefresh ? "&refresh=1" : ""}`;
 
-        // 通道 1: 通过 Tauri 原生 Rust HTTP 客户端请求 (/manifest.png 后缀可直通 content_service 校验并拿到原始字节)
-        if (getTauriInvoke()) {
-            try {
-                const targetUrl = `${trackerUrl}/manifest.png?${qs}`;
-                const result = await tauriInvoke("download_external_import_url", { url: targetUrl });
-                if (result && result.data) {
-                    const bytes = new Uint8Array(result.data);
-                    const text = new TextDecoder("utf-8").decode(bytes);
-                    const parsed = JSON.parse(text);
-                    cloudData = parsed;
-                    cloudError = "";
-                    return parsed;
-                }
-            } catch (rustErr) {
-                console.debug("[高级同步] Rust 通道请求回退至 fetch:", rustErr);
-            }
-        }
-
-        // 通道 2: 标准浏览器 fetch
         try {
             const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), 6000);
+            const timer = setTimeout(() => controller.abort(), 4000);
             const res = await fetch(`${trackerUrl}/?${qs}`, {
                 method: "GET",
                 cache: "no-store",
@@ -301,7 +282,7 @@
             cloudData = null;
             const msg = err?.message || String(err);
             if (err?.name === "AbortError") {
-                cloudError = `连接超时 (6秒无响应)：请检查服务器 ${trackerUrl} 是否已启动且防火墙放行了 8844 端口`;
+                cloudError = `连接超时 (4秒无响应)：请检查服务器 ${trackerUrl} 是否已启动且放行 8844 端口`;
             } else {
                 cloudError = `无法连接侦测服务 (${trackerUrl})：${msg}`;
             }
